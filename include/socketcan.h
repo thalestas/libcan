@@ -14,6 +14,10 @@ class SocketCAN{
 		const char *ifname = "vcan0";
 
 	public:
+	
+	//Implement constructors and destructors.
+	SocketCAN();
+	~SocketCAN();
 
 	//Open SocketCAN
 	int openSocket();
@@ -23,7 +27,6 @@ class SocketCAN{
 
 	//Close SocketCan
 	void closeSocket();
-
 };
 
 #endif

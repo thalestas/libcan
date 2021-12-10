@@ -3,8 +3,6 @@
 
 int main() {
 	SocketCAN tst;
-	tst.openSocket();
-	tst.closeSocket();
 
 	return 0;
 }

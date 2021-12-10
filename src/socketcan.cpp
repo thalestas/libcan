@@ -2,11 +2,18 @@
 
 #include <net/if.h>
 #include <sys/socket.h>
-//#include <sys/raw.h>
 #include <linux/can/raw.h>
 #include <cstring>
 #include <sys/ioctl.h>
 #include <unistd.h>
+
+SocketCAN::SocketCAN() {
+	SocketCAN::openSocket();
+}
+
+SocketCAN::~SocketCAN() {
+	SocketCAN::closeSocket();
+}
 
 int SocketCAN::openSocket() {
 	//Create SocketCAN
@@ -45,9 +52,6 @@ void SocketCAN::closeSocket() {
 	if(isSocketOpened() == -1)
 		return;
 	close(socket_fd);
+	socket_fd = -1;
 	std::cout << "SocketCAN closed!" << std::endl;
 }
-
-//void CAN::print() {
-//	std::cout << "LIB2!" << std::endl;
-//}
