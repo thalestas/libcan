@@ -55,3 +55,8 @@ void SocketCAN::closeSocket() {
 	socket_fd = -1;
 	std::cout << "SocketCAN closed!" << std::endl;
 }
+
+int SocketCAN::writeSocket(struct can_frame *data) {
+	int nbytes = write(socket_fd, data, sizeof(struct can_frame));
+	return nbytes;
+}

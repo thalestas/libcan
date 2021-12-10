@@ -27,6 +27,9 @@ class SocketCAN{
 
 	//Close SocketCan
 	void closeSocket();
+
+	//Send pkg through the socket
+	int writeSocket(struct can_frame *data);
 };
 
 #endif
