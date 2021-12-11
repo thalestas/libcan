@@ -60,3 +60,8 @@ int SocketCAN::writeSocket(struct can_frame *data) {
 	int nbytes = write(socket_fd, data, sizeof(struct can_frame));
 	return nbytes;
 }
+
+int SocketCAN::readSocket(struct can_frame *data) {
+	int nbytes = read(socket_fd, data, sizeof(struct can_frame));
+	return nbytes;
+}

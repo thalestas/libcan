@@ -30,6 +30,9 @@ class SocketCAN{
 
 	//Send pkg through the socket
 	int writeSocket(struct can_frame *data);
+
+	//Receive pkg through the socket
+	int readSocket(struct can_frame *data);
 };
 
 #endif
