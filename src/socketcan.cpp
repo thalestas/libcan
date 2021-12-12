@@ -43,6 +43,7 @@ int SocketCAN::openSocket() {
 	}
 
 	std::cout << "SocketCAN opened!" << std::endl;
+	return socket_fd;
 }
 
 int SocketCAN::isSocketOpened() {
@@ -102,4 +103,12 @@ void SocketCAN::printFrame(const struct can_frame &frame) {
 	for(int i=0; i<static_cast<unsigned>(frame.can_dlc); i++)
 		std::cout << std::uppercase << static_cast<unsigned>(frame.data[i]) << " ";
 	std::cout << std::endl;
+}
+
+int SocketCAN::setFilter(const struct can_filter &filter) {
+	if(!SocketCAN::isSocketOpened())
+		return -1;
+
+	return setsockopt(socket_fd, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
+
 }

@@ -38,6 +38,8 @@ public:
 
 	//Print the frame
 	void printFrame(const struct can_frame &frame);
+
+	int setFilter(const struct can_filter &filter);
 };
 
 #endif
