@@ -6,6 +6,7 @@
 #include <cstring>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <sys/select.h>
 
 SocketCAN::SocketCAN() {
 	SocketCAN::openSocket();
@@ -63,5 +64,42 @@ int SocketCAN::writeSocket(struct can_frame *data) {
 
 int SocketCAN::readSocket(struct can_frame *data) {
 	int nbytes = read(socket_fd, data, sizeof(struct can_frame));
+	
+	if(nbytes < 0)
+		std::cout << "Pkg Error!" << std::endl;
+	else if(nbytes < sizeof(struct can_frame)) {
+		std::cout << "Incomplete pkg!" << std::endl;
+		nbytes = 0;
+	}
 	return nbytes;
+}
+
+int SocketCAN::selectSocket(int sec_timeout) {
+	struct timeval tv;
+	int retval{0};
+	fd_set rfds;
+
+	tv.tv_sec = sec_timeout;
+	tv.tv_usec = 0;
+
+	FD_ZERO(&rfds);
+	FD_SET(socket_fd, &rfds);
+
+	retval = select(socket_fd+1, &rfds, NULL, NULL, &tv);
+
+	if(retval == -1)
+		std::cout << "error select" << std::endl;
+	else if(!retval)
+		std::cout << "Timeout!!" << std::endl;
+
+	return retval;
+}
+
+void SocketCAN::printFrame(const struct can_frame &frame) {
+	std::cout << std::hex << "id: " << frame.can_id;
+	std::cout << " len: " << static_cast<unsigned>(frame.can_dlc);
+	std::cout << " data: ";
+	for(int i=0; i<static_cast<unsigned>(frame.can_dlc); i++)
+		std::cout << std::uppercase << static_cast<unsigned>(frame.data[i]) << " ";
+	std::cout << std::endl;
 }
