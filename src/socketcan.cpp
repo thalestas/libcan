@@ -105,10 +105,10 @@ void SocketCAN::printFrame(const struct can_frame &frame) {
 	std::cout << std::endl;
 }
 
-int SocketCAN::setFilter(const struct can_filter &filter) {
+int SocketCAN::setFilter(const struct can_filter *filter) {
 	if(!SocketCAN::isSocketOpened())
 		return -1;
 
-	return setsockopt(socket_fd, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
+	return setsockopt(socket_fd, SOL_CAN_RAW, CAN_RAW_FILTER, filter, sizeof(filter)/sizeof(struct can_filter));
 
 }
